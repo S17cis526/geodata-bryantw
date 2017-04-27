@@ -1,7 +1,7 @@
 "use strict;"
 
 // The port to serve on
-const PORT = 3000;
+const PORT = 3027;
 
 // global variables
 var fs = require('fs');
@@ -33,13 +33,26 @@ function serveFile(file, type, req, res) {
   });
 }
 
+function addLocation(req, res) {
+  var url = require('url').parse(req.url);
+  var qs = require('qs').parse(url.query);
+  var address = qs.address;
+
+  //Perform geolcation with address
+  // Use datasciencetookit api
+}
+
+
+
 /** @function handleRequest
  * Handles incoming http requests
  * @param {http.incomingRequest} req - the request object
  * @param {http.serverResponse} res - the response object
  */
 function handleRequest(req, res) {
-  switch(req.url) {
+  var url = require('url').parse(req.url);
+
+  switch(url.pathName) {
     // Serving static files
     case '/':
     case '/index.html':
@@ -53,6 +66,10 @@ function handleRequest(req, res) {
       break;
     case '/pin.png':
       serveFile('public/pin.png', 'image/png', req, res);
+      break;
+
+    case '/add-location':
+      addlocation(req, res);
       break;
 
     // Serve geodata
